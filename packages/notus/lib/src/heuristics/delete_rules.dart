@@ -102,6 +102,10 @@ class PreserveLineStyleOnMergeRule extends DeleteRule {
 class EnsureEmbedLineRule extends DeleteRule {
   const EnsureEmbedLineRule();
 
+  bool is_inline(Object data){
+    return (data is String) || ((data is Map) && data['_inline']==true);
+  }
+
   @override
   Delta? apply(Delta document, int index, int length) {
     final iter = DeltaIterator(document);
@@ -113,7 +117,7 @@ class EnsureEmbedLineRule extends DeleteRule {
     var remaining = length;
     var foundEmbed = false;
     var hasLineBreakBefore = false;
-    if (op != null && op.data is! String) {
+    if (op != null && !is_inline(op.data)) {
       foundEmbed = true;
       var candidate = iter.next(1);
       remaining--;
@@ -129,7 +133,9 @@ class EnsureEmbedLineRule extends DeleteRule {
           lengthDelta += 1;
         }
       }
-    } else {
+    } else if(op!=null && is_inline(op.data)){
+      hasLineBreakBefore=false;
+    }else {
       // If op is `null` it's beginning of the doc, e.g. implicit line break.
       final opText = op?.data as String?;
       hasLineBreakBefore = op == null || opText!.endsWith('\n');
@@ -143,7 +149,7 @@ class EnsureEmbedLineRule extends DeleteRule {
       // If there is a newline before deleted range we allow the operation
       // since it results in a correctly formatted line with a single embed in
       // it.
-      if (candidate.data is! String && !hasLineBreakBefore) {
+      if (!is_inline(candidate.data) && !hasLineBreakBefore) {
         foundEmbed = true;
         lengthDelta -= 1;
       }
