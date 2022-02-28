@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:zefyr/zefyr.dart';
 
-Widget inline_embed_builder(BuildContext context, EmbedNode node){
+Widget embed_inline_builder(BuildContext context, EmbedNode node){
   if(node.value.inline){
     return Container(color: Colors.green, width: 200, height: 100,);
   }
   return defaultZefyrEmbedBuilder(context, node);
 }
 
-class InsertEmbedButton extends StatelessWidget {
-  const InsertEmbedButton({Key? key, required this.controller, required this.icon}) : super(key: key);
+class InsertEmbedLineButton extends StatelessWidget {
+  const InsertEmbedLineButton({Key? key, required this.controller, required this.icon}) : super(key: key);
 
   final ZefyrController controller;
   final IconData icon;
@@ -35,7 +35,7 @@ class InsertEmbedButton extends StatelessWidget {
           baseOffset: index + 2,
           extentOffset: index + 2,
         );
-        controller.replaceText(index, length, BlockEmbed.horizontalRule,
+        controller.replaceText(index, length, SpanEmbed('test'),
             selection: newSelection);
       },
     );

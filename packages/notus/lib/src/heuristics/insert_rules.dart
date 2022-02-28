@@ -452,8 +452,9 @@ class InsertEmbedsRule extends InsertRule {
     final isNewlineBefore = previous == null || textBefore.endsWith('\n');
     final isNewlineAfter = textAfter.startsWith('\n');
     final isOnEmptyLine = isNewlineBefore && isNewlineAfter;
+    final isInline= (data is Map) && data['_inline']==true;
 
-    if (isOnEmptyLine) {
+    if (isOnEmptyLine || isInline) {
       return result..insert(data);
     }
     // We are on a non-empty line, split it (preserving style if needed)

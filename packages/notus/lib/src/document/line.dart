@@ -26,7 +26,7 @@ class LineNode extends ContainerNode<LeafNode>
     if (childCount == 1) {
       return children.single is EmbedNode;
     }
-    assert(children.every((child) => child is TextNode));
+    assert(children.every((child) => child is TextNode || ((child is EmbedNode) && child.value.inline)));
     return false;
   }
 

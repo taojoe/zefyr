@@ -165,7 +165,10 @@ class _TextLineState extends State<TextLine> {
     );
   }
 
-  TextSpan _segmentToTextSpan(Node segment, ZefyrThemeData theme) {
+  InlineSpan _segmentToTextSpan(Node segment, ZefyrThemeData theme) {
+    if(segment is EmbedNode){
+      return WidgetSpan(child: EmbedProxy(child: widget.embedBuilder(context, segment)));
+    }
     final text = segment as TextNode;
     final attrs = text.style;
     final isLink = attrs.contains(NotusAttribute.link);

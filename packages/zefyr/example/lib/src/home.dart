@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zefyr/zefyr.dart';
 
+import 'embed_inline.dart';
 import 'forms_decorated_field.dart';
 import 'layout.dart';
 import 'layout_expanded.dart';
@@ -161,7 +162,10 @@ class _HomePageState extends State<HomePage> {
   Widget _buildWelcomeEditor(BuildContext context) {
     return Column(
       children: [
-        ZefyrToolbar.basic(controller: _controller!),
+        ZefyrToolbar.basic(
+          controller: _controller!,
+          trailing: [InsertEmbedLineButton(controller: _controller!, icon: Icons.block,)],
+        ),
         Divider(height: 1, thickness: 1, color: Colors.grey.shade200),
         Expanded(
           child: Container(
@@ -175,6 +179,7 @@ class _HomePageState extends State<HomePage> {
               // padding: EdgeInsets.only(left: 16, right: 16),
               onLaunchUrl: _launchUrl,
               maxContentWidth: 800,
+              embedBuilder: embed_inline_builder,
             ),
           ),
         ),
