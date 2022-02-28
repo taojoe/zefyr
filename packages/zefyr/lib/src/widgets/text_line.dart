@@ -123,10 +123,11 @@ class _TextLineState extends State<TextLine> {
       final embed = widget.node.children.single as EmbedNode;
       return EmbedProxy(child: widget.embedBuilder(context, embed));
     }
+    final textOnly = widget.node.children.every((element) => element is TextNode);
     final text = buildText(context, widget.node);
     final textAlign = getTextAlign(widget.node);
     final strutStyle =
-        StrutStyle.fromTextStyle(text.style!, forceStrutHeight: true);
+        StrutStyle.fromTextStyle(text.style!, forceStrutHeight: textOnly);
     return RichTextProxy(
       textStyle: text.style!,
       textAlign: textAlign,
@@ -167,7 +168,7 @@ class _TextLineState extends State<TextLine> {
 
   InlineSpan _segmentToTextSpan(Node segment, ZefyrThemeData theme) {
     if(segment is EmbedNode){
-      return WidgetSpan(child: EmbedProxy(child: widget.embedBuilder(context, segment)));
+      return WidgetSpan(child: EmbedProxy(child: IntrinsicWidth(child: widget.embedBuilder(context, segment))));
     }
     final text = segment as TextNode;
     final attrs = text.style;

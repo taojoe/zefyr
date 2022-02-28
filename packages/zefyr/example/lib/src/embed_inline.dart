@@ -32,8 +32,8 @@ class InsertEmbedLineButton extends StatelessWidget {
         // Move the cursor to the beginning of the line right after the embed.
         // 2 = 1 for the embed itself and 1 for the newline after it
         final newSelection = controller.selection.copyWith(
-          baseOffset: index + 2,
-          extentOffset: index + 2,
+          baseOffset: index + 1,
+          extentOffset: index + 1,
         );
         controller.replaceText(index, length, SpanEmbed('test'),
             selection: newSelection);
