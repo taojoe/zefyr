@@ -324,14 +324,11 @@ class WidgetSpanWithText extends WidgetSpan{
   }
   @override
   int? codeUnitAtVisitor(int index, Accumulator offset) {
-    final text=' ';
-    if (text == null) {
-      return null;
+    const text=' ';
+    if (index - offset.value < text.length) {
+      return text.codeUnitAt(index - offset.value);
     }
-    if (index - offset.value < text!.length) {
-      return text!.codeUnitAt(index - offset.value);
-    }
-    offset.increment(text!.length);
+    offset.increment(text.length);
     return null;
   }
 }
