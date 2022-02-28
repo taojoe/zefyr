@@ -121,7 +121,9 @@ class _TextLineState extends State<TextLine> {
     assert(debugCheckHasMediaQuery(context));
     if (widget.node.hasEmbed) {
       final embed = widget.node.children.single as EmbedNode;
-      return EmbedProxy(child: widget.embedBuilder(context, embed));
+      if(!embed.value.inline){
+        return EmbedProxy(child: widget.embedBuilder(context, embed));
+      }
     }
     final textOnly = widget.node.children.every((element) => element is TextNode);
     final text = buildText(context, widget.node);

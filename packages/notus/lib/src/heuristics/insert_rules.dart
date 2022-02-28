@@ -323,6 +323,10 @@ class AutoFormatLinksRule extends InsertRule {
 class ForceNewlineForInsertsAroundEmbedRule extends InsertRule {
   const ForceNewlineForInsertsAroundEmbedRule();
 
+  bool is_inline(Object data){
+    return (data is String) || ((data is Map) && data['_inline']==true);
+  }
+
   @override
   Delta? apply(Delta document, int index, Object data) {
     if (data is! String) return null;
@@ -330,8 +334,8 @@ class ForceNewlineForInsertsAroundEmbedRule extends InsertRule {
     final iter = DeltaIterator(document);
     final previous = iter.skip(index);
     final target = iter.next();
-    final cursorBeforeEmbed = target.data is! String;
-    final cursorAfterEmbed = previous != null && previous.data is! String;
+    final cursorBeforeEmbed = !is_inline(target.data);
+    final cursorAfterEmbed = previous != null && !is_inline(previous.data);
 
     if (cursorBeforeEmbed || cursorAfterEmbed) {
       final delta = Delta()..retain(index);
