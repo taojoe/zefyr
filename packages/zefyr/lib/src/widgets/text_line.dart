@@ -168,7 +168,7 @@ class _TextLineState extends State<TextLine> {
 
   InlineSpan _segmentToTextSpan(Node segment, ZefyrThemeData theme) {
     if(segment is EmbedNode){
-      return WidgetSpan(child: EmbedProxy(child: IntrinsicWidth(child: widget.embedBuilder(context, segment))));
+      return WidgetSpanWithText(child: EmbedProxy(child: IntrinsicWidth(child: widget.embedBuilder(context, segment))));
     }
     final text = segment as TextNode;
     final attrs = text.style;
@@ -309,5 +309,27 @@ class _TextLineState extends State<TextLine> {
       decorations.add(b!.decoration!);
     }
     return a.merge(b).apply(decoration: TextDecoration.combine(decorations));
+  }
+}
+
+// 修复text_painter中计算inline的文字的长度的错误 flutter_stable/packages/flutter/lib/src/painting/text_painter.dart， _getRectFromDownstream
+class WidgetSpanWithText extends WidgetSpan{
+  WidgetSpanWithText({required Widget child}) : super(child: child);
+
+  @override
+  void computeToPlainText(StringBuffer buffer, {bool includeSemanticsLabels = true, bool includePlaceholders = true}) {
+    buffer.write('\uFFFC');
+  }
+  @override
+  int? codeUnitAtVisitor(int index, Accumulator offset) {
+    final text=' ';
+    if (text == null) {
+      return null;
+    }
+    if (index - offset.value < text!.length) {
+      return text!.codeUnitAt(index - offset.value);
+    }
+    offset.increment(text!.length);
+    return null;
   }
 }
