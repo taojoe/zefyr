@@ -170,7 +170,7 @@ class _TextLineState extends State<TextLine> {
 
   InlineSpan _segmentToTextSpan(Node segment, ZefyrThemeData theme) {
     if(segment is EmbedNode){
-      return WidgetSpanWithText(child: EmbedProxy(child: IntrinsicWidth(child: widget.embedBuilder(context, segment))));
+      return WidgetSpanWithText(child: EmbedProxy(child: widget.embedBuilder(context, segment)));
     }
     final text = segment as TextNode;
     final attrs = text.style;
