@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:notus/src/heuristics/utils.dart';
 import 'package:quill_delta/quill_delta.dart';
 
 /// A heuristic rule for delete operations.
@@ -101,10 +102,6 @@ class PreserveLineStyleOnMergeRule extends DeleteRule {
 /// Prevents user from merging a line containing an embed with other lines.
 class EnsureEmbedLineRule extends DeleteRule {
   const EnsureEmbedLineRule();
-
-  bool is_inline(Object data){
-    return (data is String) || ((data is Map) && data['_inline']==true);
-  }
 
   @override
   Delta? apply(Delta document, int index, int length) {

@@ -323,10 +323,6 @@ class AutoFormatLinksRule extends InsertRule {
 class ForceNewlineForInsertsAroundEmbedRule extends InsertRule {
   const ForceNewlineForInsertsAroundEmbedRule();
 
-  bool is_inline(Object data){
-    return (data is String) || ((data is Map) && data['_inline']==true);
-  }
-
   @override
   Delta? apply(Delta document, int index, Object data) {
     if (data is! String) return null;
@@ -453,22 +449,19 @@ class InsertEmbedsRule extends InsertRule {
     final textBefore = previous?.data is String ? previous!.data as String : '';
     final textAfter = target.data is String ? target.data as String : '';
 
+    final dataIsInline= is_inline(data);
     final isNewlineBefore = previous == null || textBefore.endsWith('\n');
     final isNewlineAfter = textAfter.startsWith('\n');
     final isOnEmptyLine = isNewlineBefore && isNewlineAfter;
-    final isInline= (data is Map) && data['_inline']==true;
 
-    if (isOnEmptyLine || isInline) {
-      return result..insert(data);
-    }
     // We are on a non-empty line, split it (preserving style if needed)
     // and insert our embed.
-    final lineStyle = _getLineStyle(iter, target);
-    if (!isNewlineBefore) {
+    if (!isNewlineBefore && (!dataIsInline || !is_inline(previous?.data))) {
+      final lineStyle = _getLineStyle(iter, target);
       result.insert('\n', lineStyle);
     }
     result.insert(data);
-    if (!isNewlineAfter) {
+    if (!isNewlineAfter && (!dataIsInline || !is_inline(target.data))) {
       result.insert('\n');
     }
     return result;

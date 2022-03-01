@@ -32,3 +32,7 @@ List<Operation> skipToLineAt(DeltaIterator iter, int length) {
   }
   return prefix;
 }
+
+bool is_inline(Object? data){
+  return data !=null &&((data is String) || ((data is Map) && data['_inline']==true));
+}
