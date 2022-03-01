@@ -122,7 +122,7 @@ class _TextLineState extends State<TextLine> {
     if (widget.node.hasEmbed) {
       final embed = widget.node.children.single as EmbedNode;
       if(!embed.value.inline){
-        return EmbedProxy(child: widget.embedBuilder(context, embed));
+        return EmbedProxy(child: widget.embedBuilder(context, embed, widget.controller));
       }
     }
     final textOnly = widget.node.children.every((element) => element is TextNode);
@@ -170,7 +170,7 @@ class _TextLineState extends State<TextLine> {
 
   InlineSpan _segmentToTextSpan(Node segment, ZefyrThemeData theme) {
     if(segment is EmbedNode){
-      return WidgetSpanWithText(child: EmbedProxy(child: widget.embedBuilder(context, segment)));
+      return WidgetSpanWithText(child: EmbedProxy(child: widget.embedBuilder(context, segment, widget.controller)));
     }
     final text = segment as TextNode;
     final attrs = text.style;

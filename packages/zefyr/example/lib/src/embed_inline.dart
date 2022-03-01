@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:zefyr/zefyr.dart';
 
-Widget embed_inline_builder(BuildContext context, EmbedNode node){
+Widget embed_inline_builder(BuildContext context, EmbedNode node, ZefyrController controller){
   if(node.value.inline){
     return Container(color: Colors.green, width: 200, height: 100,);
   }
-  return defaultZefyrEmbedBuilder(context, node);
+  return defaultZefyrEmbedBuilder(context, node, controller);
 }
 
 class InsertEmbedLineButton extends StatelessWidget {

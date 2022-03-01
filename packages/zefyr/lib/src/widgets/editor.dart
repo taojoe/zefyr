@@ -28,13 +28,13 @@ import 'theme.dart';
 
 /// Builder function for embeddable objects in [ZefyrEditor].
 typedef ZefyrEmbedBuilder = Widget Function(
-    BuildContext context, EmbedNode node);
+    BuildContext context, EmbedNode node, ZefyrController controller);
 
 /// Default implementation of a builder function for embeddable objects in
 /// Zefyr.
 ///
 /// Only supports "horizontal rule" embeds.
-Widget defaultZefyrEmbedBuilder(BuildContext context, EmbedNode node) {
+Widget defaultZefyrEmbedBuilder(BuildContext context, EmbedNode node, ZefyrController controller) {
   if (node.value.type == 'hr') {
     final theme = ZefyrTheme.of(context)!;
     return Divider(
