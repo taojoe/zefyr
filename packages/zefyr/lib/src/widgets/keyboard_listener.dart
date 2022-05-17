@@ -32,7 +32,8 @@ class ZefyrPressedKeys extends ChangeNotifier {
 
 class ZefyrKeyboardListener extends StatefulWidget {
   final Widget child;
-  const ZefyrKeyboardListener({Key? key, required this.child})
+  final bool readOnly;
+  const ZefyrKeyboardListener({Key? key, required this.child, required this.readOnly})
       : super(key: key);
 
   @override
@@ -43,8 +44,9 @@ class ZefyrKeyboardListenerState extends State<ZefyrKeyboardListener> {
   final ZefyrPressedKeys _pressedKeys = ZefyrPressedKeys();
 
   bool _keyEvent(KeyEvent event) {
-    _pressedKeys
-        ._updatePressedKeys(HardwareKeyboard.instance.logicalKeysPressed);
+    if(!widget.readOnly){
+      _pressedKeys._updatePressedKeys(HardwareKeyboard.instance.logicalKeysPressed);
+    }
     return false;
   }
 

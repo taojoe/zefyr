@@ -1246,6 +1246,7 @@ class RawEditorState extends EditorState
           child: Focus(
             focusNode: effectiveFocusNode,
             child: ZefyrKeyboardListener(
+              readOnly: widget.readOnly,
               child: Container(
                 constraints: constraints,
                 child: child,
